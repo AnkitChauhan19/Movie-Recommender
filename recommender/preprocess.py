@@ -13,6 +13,7 @@ data = movies.loc[:, ['id', 'title', 'genres', 'original_language', 'vote_averag
 data = data.dropna()
 # Changing index to id of movies and sorting rows according to index
 data.sort_index(inplace = True)
+data.sort_values(by = 'title', ascending = True, inplace = True)
 
 # Function to convert comma separated strings to lists
 def to_list(value):
