@@ -1,5 +1,5 @@
 from recommender import get_recommendations
+import pandas as pd
 
-recommendations = get_recommendations('Iron Man')
-for i in range(len(recommendations)):
-    print(recommendations[i][0])
+data = pd.read_csv("data/movies.csv")
+print(data)

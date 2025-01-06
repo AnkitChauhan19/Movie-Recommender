@@ -6,9 +6,10 @@ movies = pd.read_csv("data/full_movies_dataset.csv")
 
 # Filtering out unreleased and non-voted movies
 movies = movies[(movies['status'] == 'Released') & (movies['vote_count'] > 0)]
+print(movies[movies['title'] == ''])
 
 # Selecting required columns
-data = movies.loc[:, ['id', 'title', 'genres', 'original_language', 'vote_average', 'vote_count', 'popularity']]
+data = movies.loc[:, ['id', 'title', 'genres', 'original_language', 'vote_average', 'vote_count', 'popularity', 'release_date']]
 # Dropping rows with NULL values
 data = data.dropna()
 # Changing index to id of movies and sorting rows according to index
@@ -36,4 +37,4 @@ data['genres'] = data['genres'].apply(clean)
 data['popularity'] = ((data['popularity'] - data['popularity'].mean()) / data['popularity'].std()).round(1)
 
 # Saving the dataset
-data.to_csv("data/movies.csv", index = False)
+# data.to_csv("data/movies.csv", index = False)
