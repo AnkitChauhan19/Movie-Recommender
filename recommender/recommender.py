@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import random
 
 # Loading preprocessed data
 data = pd.read_csv("data/movies.csv")
@@ -21,11 +22,12 @@ def movie_similarity(movie1_id, movie2_id, genre_weight = 0.4, vote_weight = 0.3
     language = language_weight if data['original_language'].iloc[movie1_id] == data['original_language'].iloc[movie2_id] else 0
     vote = data['vote_average'].iloc[movie2_id] * vote_weight
     popularity = data['popularity'].iloc[movie2_id] * popularity_weight * 0.01
-    total_similarity = genre + language + vote + popularity
+    # total_similarity = genre + language + vote + popularity
+    total_similarity = genre + language + vote
     return total_similarity
 
-# Function to get top N recommendations
-def get_recommendations(movie_title, top_n = 10):
+# Function to get top N recommendations based on single movie
+def get_recommendations(movie_title, top_n = 10, score = False):
     if not isinstance(movie_title, str):
         return "Error: Movie title must be a string."
 
@@ -36,9 +38,33 @@ def get_recommendations(movie_title, top_n = 10):
     
     similarities = [[i, movie_similarity(movie_index, i)] for i in range(len(movie_titles)) if i != movie_index]
     similarities.sort(key = lambda x: x[1], reverse = True)
-    similarities = similarities[:top_n]
 
-    for i in range(len(similarities)):
-        similarities[i][0] = movie_titles[similarities[i][0]]
+    recommendations = similarities[:top_n]
+
+    for i in range(len(recommendations)):
+        recommendations[i][0] = movie_titles[recommendations[i][0]]
     
-    return similarities
+    if not score:
+        recommendations = [recommendations[i][0] for i in range(len(recommendations))]
+    
+    return recommendations
+
+# Function to get top N recommendations based on many movies
+def get_recommendations_many(movie_list, top_n = 10):
+    selected_movies = []
+    to_be_selected = 5
+    if len(movie_list) >= 5:
+        selected_movies = random.sample(movie_list, to_be_selected)
+    else:
+        selected_movies = movie_list
+    
+    all_recommendations = set()
+    for movie in selected_movies:
+        current_rec = set(get_recommendations(movie, top_n))
+        all_recommendations.update(current_rec)
+
+    if len(all_recommendations) < top_n:
+        return list(all_recommendations)
+    else:
+        recommendations = random.sample(all_recommendations, top_n)
+        return recommendations
