@@ -22,8 +22,7 @@ def movie_similarity(movie1_id, movie2_id, genre_weight = 0.4, vote_weight = 0.3
     language = language_weight if data['original_language'].iloc[movie1_id] == data['original_language'].iloc[movie2_id] else 0
     vote = data['vote_average'].iloc[movie2_id] * vote_weight
     popularity = data['popularity'].iloc[movie2_id] * popularity_weight * 0.01
-    # total_similarity = genre + language + vote + popularity
-    total_similarity = genre + language + vote
+    total_similarity = genre + language + vote + popularity
     return total_similarity
 
 # Function to get top N recommendations based on single movie
