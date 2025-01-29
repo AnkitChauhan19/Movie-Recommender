@@ -54,7 +54,7 @@ class HomeScreen(Screen):
 class AddMovieScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.movies = self.load_movies("C:/Users/ankit/Desktop/Movie-Recommender/data/movies.csv")
+        self.movies = self.load_movies("data/movies.csv")
 
         layout = BoxLayout(orientation='vertical', padding=10, spacing=10)
 
